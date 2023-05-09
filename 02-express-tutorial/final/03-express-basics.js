@@ -1,27 +1,28 @@
-const express = require('express')
-const app = express()
+// added notes below
 
-app.get('/', (req, res) => {
-  console.log('user hit the resource')
-  res.status(200).send('Home Page')
-})
+const express = require('express');
+const path = require('path');
+const app = express();
 
-app.get('/about', (req, res) => {
-  res.status(200).send('About Page')
-})
+// Static Asset - an asset that the server does not need to change
+// placed in designated folder, usually called 'public'
+// path, mime types, status codes set up automatically by Express
 
-app.all('*', (req, res) => {
-  res.status(404).send('<h1>resource not found</h1>')
+// examples: images, CSS stylesheets, javascript files
+
+// setup static and middleware
+app.use(express.static('./public'))
+
+// app.get('/', (req, res) => {
+//     res.status(200).sendFile(path.resolve(__dirname, './navbar-app/index.html'));
+//     // adding to static assets
+//     // Server side rendering - html templating
+// })
+
+app.get('*', (req, res) => {
+  res.status(404).send("<h1>Resource not found</h1>");
 })
 
 app.listen(5000, () => {
-  console.log('server is listening on port 5000...')
+  console.log(`Listening on port 5000...`);
 })
-
-// app.get
-// app.post
-// app.put
-// app.delete
-// app.all
-// app.use
-// app.listen
