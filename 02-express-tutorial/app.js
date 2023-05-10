@@ -1,31 +1,21 @@
 const express = require('express');
 const app = express();
-const {products, people} = require('./data')
+const peopleRouter = require('./routes/people');
+const authRouter = require('./routes/auth');
+
+// static assets
+app.use(express.static('./methods-public'));
+// parse form data
+app.use(express.urlencoded({ extended: false}));
+// parse json
+app.use(express.json());
+// use people route
+app.use('/api/people', peopleRouter);
+// use login route
+app.use('/login', authRouter);
 
 app.get('/', (req, res) => {
-    res.send('<h1>Home page</h1> <a href="/api/products">products</a>');
-})
-
-app.get('/api/products/', (req, res) => {
-    const newProducts = products.map((product) => {
-        const {id, name, image} = product;
-        return {id, name, image};
-    })
-    res.json(newProducts);
-})
-
-// Route parameters - a placeholder where the user provides the data
-// We can access this data by using req.params (returned as an object)
-app.get('/api/products/:productID', (req, res) => {
-    const {productID} = req.params;
-    console.log(productID);
-    const singleProduct = products.find((product) => product.id === Number(productID))
-
-    if(!singleProduct){
-        res.status(404).send('Product does not exist!');
-    }
-
-    res.json(singleProduct);
+    res.status(200).send('Home page');
 })
 
 app.listen(5000, () => {
